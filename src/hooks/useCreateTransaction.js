@@ -4,7 +4,16 @@ import toast from "react-hot-toast";
 
 export function useCreateTransaction() {
   const { mutate: createTrans, isLoading: isCreateTrans } = useMutation({
-    mutationFn: ({ fullName, type, amount, country, imageN, e_code, price }) =>
+    mutationFn: ({
+      fullName,
+      type,
+      amount,
+      country,
+      imageN,
+      e_code,
+      price,
+      details,
+    }) =>
       createTransaction({
         fullName,
         type,
@@ -13,6 +22,7 @@ export function useCreateTransaction() {
         imageN,
         e_code,
         price,
+        details,
       }),
     onSuccess: () => {
       toast.success("Order have been successfully submited");

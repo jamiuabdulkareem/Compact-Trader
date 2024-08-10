@@ -76,6 +76,7 @@ function TradeGiftCard() {
     const imageN = images;
     const fullName = `${user.user_metadata.firstName} ${user.user_metadata.lastName}`;
     const price = selectGifcardOption?.rate;
+    const details = "card";
 
     createTrans(
       {
@@ -86,6 +87,7 @@ function TradeGiftCard() {
         imageN,
         e_code,
         price,
+        details,
       },
       {
         onSettled: () => {

@@ -64,6 +64,7 @@ export async function getTransaction() {
   return data;
 }
 
+// Gift card upload
 export async function createTransaction({
   type,
   amount,
@@ -72,6 +73,7 @@ export async function createTransaction({
   e_code,
   fullName,
   price,
+  details,
 }) {
   const hasImagePath = imageN?.startsWith?.(supabaseUrl);
   const randomId = Math.random();
@@ -98,6 +100,7 @@ export async function createTransaction({
           status: "Pending",
           e_code,
           price,
+          details,
         },
       ],
       { onConflict: ["id"] }
@@ -126,4 +129,37 @@ export async function createTransaction({
       );
     }
   });
+}
+
+// create withdraw transaction
+export async function withdrawal({
+  fullName,
+  bankName,
+  accountNumber,
+  amount,
+  details,
+}) {
+  const { data: curentUser } = await supabase.auth.getUser();
+
+  const { data, error } = await supabase
+    .from("Transaction")
+    .insert([
+      {
+        user_id: curentUser.user.id,
+        full_name: fullName,
+        type: "Withdrawal",
+        amount,
+        status: "Pending",
+        bankName,
+        details,
+      },
+    ])
+    .select();
+
+  if (error) {
+    console.log(error);
+    throw new Error("Unable to withraw");
+  }
+
+  return data;
 }
